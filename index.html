@@ -674,87 +674,6 @@
   }
   .faq-item.open .faq-a { max-height: 500px; padding-bottom: 1.75rem; }
 
-  /* ── VAPI WIDGET ── */
-  .vapi-widget {
-    position: fixed; bottom: 2rem; right: 2rem;
-    z-index: 1000;
-  }
-  .vapi-btn {
-    width: 64px; height: 64px; border-radius: 50%;
-    background: var(--gold);
-    border: 3px solid rgba(255,255,255,.25);
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer; box-shadow: 0 4px 24px rgba(0,0,0,.4);
-    transition: transform .2s, box-shadow .2s;
-    position: relative;
-  }
-  .vapi-btn:hover { transform: scale(1.08); box-shadow: 0 8px 32px rgba(0,0,0,.5); }
-  .vapi-pulse {
-    position: absolute; inset: -4px; border-radius: 50%;
-    border: 2px solid var(--gold); opacity: .4;
-    animation: pulse 2.5s ease infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); opacity: .4; }
-    50% { transform: scale(1.2); opacity: 0; }
-  }
-  .vapi-btn svg { width: 28px; height: 28px; fill: var(--navy); }
-  .vapi-label {
-    position: absolute; right: 76px; top: 50%; transform: translateY(-50%);
-    background: var(--navy-mid); color: var(--cream);
-    font-family: 'DM Mono', monospace; font-size: 12px;
-    letter-spacing: .1em; text-transform: uppercase;
-    padding: .45rem 1rem; white-space: nowrap;
-    border: 1px solid rgba(201,168,76,.3);
-    box-shadow: 0 2px 12px rgba(0,0,0,.3);
-    pointer-events: none;
-  }
-  .vapi-label .label-name { color: var(--gold); font-weight: 500; display: block; margin-bottom: .1rem; }
-  .vapi-panel {
-    position: absolute; bottom: 80px; right: 0;
-    width: 340px; background: var(--navy-mid);
-    border: 1px solid rgba(201,168,76,.25);
-    border-top: 4px solid var(--gold);
-    box-shadow: 0 16px 48px rgba(0,0,0,.5);
-    display: none; flex-direction: column;
-  }
-  .vapi-panel.open { display: flex; }
-  .vapi-panel-header {
-    padding: 1.5rem 1.5rem 1rem;
-    border-bottom: 1px solid rgba(201,168,76,.12);
-  }
-  .vapi-panel-header h4 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.2rem; font-weight: 700; color: var(--cream);
-  }
-  .vapi-panel-header p {
-    font-size: .9rem; color: rgba(245,238,220,.55); line-height: 1.5; margin-top: .3rem;
-  }
-  .vapi-panel-body { padding: 1.5rem; display: flex; flex-direction: column; gap: .85rem; }
-  .vapi-call-btn {
-    background: var(--gold); color: var(--navy);
-    border: none; padding: 1rem;
-    font-family: 'DM Mono', monospace; font-size: 13px;
-    letter-spacing: .1em; text-transform: uppercase;
-    cursor: pointer; display: flex; align-items: center; justify-content: center; gap: .6rem;
-    transition: background .2s; font-weight: 500;
-  }
-  .vapi-call-btn:hover { background: var(--gold-light); }
-  .vapi-book-btn {
-    background: transparent; color: var(--cream);
-    border: 1px solid rgba(245,238,220,.2); padding: .9rem;
-    font-family: 'DM Mono', monospace; font-size: 12px;
-    letter-spacing: .1em; text-transform: uppercase;
-    cursor: pointer; text-align: center; text-decoration: none;
-    display: block; transition: border-color .2s, color .2s;
-  }
-  .vapi-book-btn:hover { border-color: var(--gold); color: var(--gold); }
-  .vapi-close-btn {
-    position: absolute; top: .75rem; right: .75rem;
-    background: none; border: none; color: rgba(245,238,220,.3);
-    font-size: 1.25rem; cursor: pointer;
-  }
-
   /* ── CTA SECTION ── */
   .cta-section {
     background: var(--rust);
@@ -849,7 +768,7 @@
     .system-extra { grid-column: span 1; }
     .ladder-step::before { display: none; }
     .stats-bar { padding: 2.5rem 1.5rem; grid-template-columns: repeat(2, 1fr); }
-    .vapi-label { display: none; }
+
   }
 </style>
 </head>
@@ -1460,97 +1379,7 @@
   </div>
 </footer>
 
-<!-- ── VAPI WIDGET ── -->
-<div class="vapi-widget" id="vapiWidget">
-  <div class="vapi-label">
-    <span class="label-name">Alexis</span>
-    Ask about the Sprint
-  </div>
-  <div class="vapi-panel" id="vapiPanel">
-    <button class="vapi-close-btn" onclick="closeVapi()" aria-label="Close">×</button>
-    <div class="vapi-panel-header">
-      <h4>Talk to Alexis</h4>
-      <p>Dr. Aden's AI concierge. Ask about the Sprint, pricing, or what you'll build Saturday.</p>
-    </div>
-    <div class="vapi-panel-body">
-      <button class="vapi-call-btn" id="vapiCallBtn" onclick="startVapiCall()">
-        <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:var(--navy);">
-          <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/>
-        </svg>
-        Start a Voice Call with Alexis
-      </button>
-      <a href="https://drjohnteaches.mysamcart.com/checkout/northeast-ohio-ai-marketing-communications-single-day-accelerator#samcart-slide-open-right" class="vapi-book-btn" target="_blank" rel="noopener">Register for June 21 →</a>
-      <a href="#contact" class="vapi-book-btn" onclick="closeVapi()">Leave a Question Instead</a>
-    </div>
-  </div>
-  <button class="vapi-btn" onclick="toggleVapi()" aria-label="Talk to Alexis">
-    <div class="vapi-pulse"></div>
-    <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.91-3c-.49 0-.9.36-.98.85C16.52 14.2 14.47 16 12 16s-4.52-1.8-4.93-4.15c-.08-.49-.49-.85-.98-.85-.61 0-1.09.54-1 1.14.49 3 2.89 5.35 5.91 5.78V20c0 .55.45 1 1 1s1-.45 1-1v-2.08c3.02-.43 5.42-2.78 5.91-5.78.1-.6-.39-1.14-1-1.14z"/></svg>
-  </button>
-</div>
-
 <script>
-/* ── VAPI WIDGET ── */
-let vapiOpen = false;
-let vapiInstance = null;
-
-function toggleVapi() {
-  const panel = document.getElementById('vapiPanel');
-  vapiOpen = !vapiOpen;
-  panel.classList.toggle('open', vapiOpen);
-}
-function closeVapi() {
-  document.getElementById('vapiPanel').classList.remove('open');
-  vapiOpen = false;
-}
-
-async function startVapiCall() {
-  const btn = document.getElementById('vapiCallBtn');
-  btn.textContent = 'Connecting to Alexis…';
-  btn.disabled = true;
-
-  // Load VAPI SDK and start call with Alexis
-  const VAPI_PUBLIC_KEY = '461b8236-250c-4d45-b38c-d9c9e64f463a';
-  const ALEXIS_UUID = 'fd362df5-ddd6-4ebe-8c42-6feb119368e9';
-
-  try {
-    if (!window.Vapi) {
-      await loadScript('https://cdn.jsdelivr.net/npm/@vapi-ai/web/dist/vapi.iife.js');
-    }
-    vapiInstance = new window.Vapi(VAPI_PUBLIC_KEY);
-    vapiInstance.start(ALEXIS_UUID);
-    btn.textContent = '🔴 Call Active — Click to End';
-    btn.onclick = endVapiCall;
-    btn.disabled = false;
-  } catch (err) {
-    console.warn('VAPI error:', err);
-    btn.textContent = 'Voice unavailable — leave a question below';
-    btn.disabled = true;
-  }
-}
-
-function endVapiCall() {
-  if (vapiInstance) { vapiInstance.stop(); vapiInstance = null; }
-  const btn = document.getElementById('vapiCallBtn');
-  btn.textContent = 'Start a Voice Call with Alexis';
-  btn.onclick = startVapiCall;
-  btn.disabled = false;
-}
-
-function loadScript(src) {
-  return new Promise((res, rej) => {
-    const s = document.createElement('script');
-    s.src = src; s.onload = res; s.onerror = rej;
-    document.head.appendChild(s);
-  });
-}
-
-/* Close panel on outside click */
-document.addEventListener('click', (e) => {
-  const widget = document.getElementById('vapiWidget');
-  if (!widget.contains(e.target) && vapiOpen) closeVapi();
-});
-
 /* ── LEAD FORM ── */
 async function submitLead() {
   const name = document.getElementById('l-name').value.trim();
@@ -1607,6 +1436,52 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.06 });
 document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+<script>
+var vapiInstance = null;
+const ALEXIS_ASSISTANT_ID = "fd362df5-ddd6-4ebe-8c42-6feb119368e9";
+const VAPI_PUBLIC_KEY = "461b8236-250c-4d45-b38c-d9c9e64f463a";
+
+(function (d, t) {
+  var g = document.createElement(t), s = d.getElementsByTagName(t)[0];
+  g.src = "https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
+  g.defer = true;
+  g.async = true;
+  s.parentNode.insertBefore(g, s);
+  g.onload = function () {
+    vapiInstance = window.vapiSDK.run({
+      apiKey: VAPI_PUBLIC_KEY,
+      assistant: ALEXIS_ASSISTANT_ID,
+      config: {
+        position: "bottom-right",
+        offset: "80px",
+        width: "64px",
+        height: "64px",
+        idle: {
+          color: "#c9a84c",
+          type: "pill",
+          title: "Talk to Alexis",
+          subtitle: "Ask about the Sprint",
+          icon: "https://unpkg.com/lucide-static@0.321.0/icons/mic.svg"
+        },
+        loading: {
+          color: "#c9a84c",
+          type: "pill",
+          title: "Connecting...",
+          subtitle: "Please wait"
+        },
+        active: {
+          color: "#b84a2e",
+          type: "pill",
+          title: "Call active",
+          subtitle: "Click to end",
+          icon: "https://unpkg.com/lucide-static@0.321.0/icons/phone-off.svg"
+        }
+      }
+    });
+  };
+})(document, "script");
 </script>
 </body>
 </html>
