@@ -772,8 +772,11 @@
 
   }
 
-  /* Hide VAPI SDK's injected default button */
-  [id*="vapi"], [class*="vapi-support"], .vapi-support-button, #vapi-support-btn {
+  /* Hide VAPI SDK's injected default button — does not match #vapiWidget */
+  #vapi-support-btn,
+  .vapi-support-button,
+  div[id^="vapi-support"],
+  div[class^="vapi-support"] {
     display: none !important;
   }
 
