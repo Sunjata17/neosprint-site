@@ -1,0 +1,20 @@
+# Environment variables — never commit these
+.env
+.env.local
+.env.*.local
+
+# Vercel
+.vercel
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude Code local settings
+.claude/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo

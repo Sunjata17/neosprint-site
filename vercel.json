@@ -1,0 +1,185 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/cleveland-ai-training",
+      "destination": "/city/cleveland-ai-training.html"
+    },
+    {
+      "source": "/akron-ai-training",
+      "destination": "/city/akron-ai-training.html"
+    },
+    {
+      "source": "/canton-ai-training",
+      "destination": "/city/canton-ai-training.html"
+    },
+    {
+      "source": "/hudson-ai-training",
+      "destination": "/city/hudson-ai-training.html"
+    },
+    {
+      "source": "/aurora-ai-training",
+      "destination": "/city/aurora-ai-training.html"
+    },
+    {
+      "source": "/solon-ai-training",
+      "destination": "/city/solon-ai-training.html"
+    },
+    {
+      "source": "/chagrin-falls-ai-training",
+      "destination": "/city/chagrin-falls-ai-training.html"
+    },
+    {
+      "source": "/beachwood-ai-training",
+      "destination": "/city/beachwood-ai-training.html"
+    },
+    {
+      "source": "/massillon-ai-training",
+      "destination": "/city/massillon-ai-training.html"
+    },
+    {
+      "source": "/medina-ai-training",
+      "destination": "/city/medina-ai-training.html"
+    },
+    {
+      "source": "/kent-ai-training",
+      "destination": "/city/kent-ai-training.html"
+    },
+    {
+      "source": "/wooster-ai-training",
+      "destination": "/city/wooster-ai-training.html"
+    },
+    {
+      "source": "/alliance-ai-training",
+      "destination": "/city/alliance-ai-training.html"
+    },
+    {
+      "source": "/youngstown-ai-training",
+      "destination": "/city/youngstown-ai-training.html"
+    },
+    {
+      "source": "/streetsboro-ai-training",
+      "destination": "/city/streetsboro-ai-training.html"
+    },
+    {
+      "source": "/pepper-pike-ai-training",
+      "destination": "/city/pepper-pike-ai-training.html"
+    },
+    {
+      "source": "/moreland-hills-ai-training",
+      "destination": "/city/moreland-hills-ai-training.html"
+    },
+    {
+      "source": "/gates-mills-ai-training",
+      "destination": "/city/gates-mills-ai-training.html"
+    },
+    {
+      "source": "/bainbridge-ai-training",
+      "destination": "/city/bainbridge-ai-training.html"
+    },
+    {
+      "source": "/twinsburg-ai-training",
+      "destination": "/city/twinsburg-ai-training.html"
+    },
+    {
+      "source": "/orange-ai-training",
+      "destination": "/city/orange-ai-training.html"
+    },
+    {
+      "source": "/westlake-ai-training",
+      "destination": "/city/westlake-ai-training.html"
+    },
+    {
+      "source": "/rocky-river-ai-training",
+      "destination": "/city/rocky-river-ai-training.html"
+    },
+    {
+      "source": "/fairlawn-ai-training",
+      "destination": "/city/fairlawn-ai-training.html"
+    },
+    {
+      "source": "/green-ai-training",
+      "destination": "/city/green-ai-training.html"
+    },
+    {
+      "source": "/barberton-ai-training",
+      "destination": "/city/barberton-ai-training.html"
+    },
+    {
+      "source": "/stow-ai-training",
+      "destination": "/city/stow-ai-training.html"
+    },
+    {
+      "source": "/strongsville-ai-training",
+      "destination": "/city/strongsville-ai-training.html"
+    },
+    {
+      "source": "/mentor-ai-training",
+      "destination": "/city/mentor-ai-training.html"
+    },
+    {
+      "source": "/brunswick-ai-training",
+      "destination": "/city/brunswick-ai-training.html"
+    },
+    {
+      "source": "/restaurant-ai-marketing-cleveland",
+      "destination": "/vertical/restaurant-ai-marketing-cleveland.html"
+    },
+    {
+      "source": "/hvac-ai-tools-ohio",
+      "destination": "/vertical/hvac-ai-tools-ohio.html"
+    },
+    {
+      "source": "/law-firm-ai-automation",
+      "destination": "/vertical/law-firm-ai-automation.html"
+    },
+    {
+      "source": "/medical-practice-ai",
+      "destination": "/vertical/medical-practice-ai.html"
+    },
+    {
+      "source": "/real-estate-ai-ohio",
+      "destination": "/vertical/real-estate-ai-ohio.html"
+    },
+    {
+      "source": "/manufacturing-ai-tools-northeast-ohio",
+      "destination": "/vertical/manufacturing-ai-tools-northeast-ohio.html"
+    },
+    {
+      "source": "/fabrication-shop-ai-canton",
+      "destination": "/vertical/fabrication-shop-ai-canton.html"
+    },
+    {
+      "source": "/retail-ai-marketing-ohio",
+      "destination": "/vertical/retail-ai-marketing-ohio.html"
+    },
+    {
+      "source": "/salon-spa-ai-tools",
+      "destination": "/vertical/salon-spa-ai-tools.html"
+    },
+    {
+      "source": "/contractor-ai-ohio",
+      "destination": "/vertical/contractor-ai-ohio.html"
+    }
+  ]
+}

@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vertical Accordion — NEO AI Accelerator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── EMBED THIS ENTIRE <style> + <section> BLOCK INTO index.html ── */
+:root {
+  --navy: #0d1b2e; --navy-mid: #142338; --navy-light: #1c3050;
+  --gold: #c9a84c; --gold-light: #e8c96a; --gold-dim: #9a7a32;
+  --cream: #f5eedc; --rust: #b84a2e; --rust-light: #d45a38;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Lora', Georgia, serif; background: var(--navy); color: var(--cream); font-size: 18px; line-height: 1.75; }
+
+/* ══════════════════════════════════════════
+   CINEMATIC ACCORDION SECTION
+══════════════════════════════════════════ */
+.accordion-section {
+  background: var(--navy);
+  padding: 7rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle background texture */
+.accordion-section::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 10% 50%, rgba(201,168,76,.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 90% 20%, rgba(184,74,46,.07) 0%, transparent 45%);
+  pointer-events: none;
+}
+
+.accordion-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 3rem;
+  position: relative;
+  z-index: 1;
+}
+
+.accordion-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: end;
+  margin-bottom: 4rem;
+}
+
+.accordion-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px; letter-spacing: .28em; text-transform: uppercase;
+  color: var(--gold-dim); margin-bottom: 1.25rem;
+  display: flex; align-items: center; gap: .75rem;
+}
+.accordion-label::before {
+  content: ''; display: block;
+  width: 2.5rem; height: 2px; background: var(--gold);
+}
+
+.accordion-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 3.5vw, 3.2rem);
+  font-weight: 900; line-height: 1.05;
+  color: var(--cream);
+}
+.accordion-title em { font-style: italic; color: var(--gold); }
+
+.accordion-intro {
+  font-size: 1.1rem; line-height: 1.82;
+  color: rgba(245,238,220,.65);
+  align-self: end;
+}
+
+/* ── THE ACCORDION ── */
+.accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid rgba(201,168,76,.12);
+}
+
+.acc-item {
+  border-bottom: 1px solid rgba(201,168,76,.1);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: background .3s ease;
+}
+.acc-item:last-child { border-bottom: none; }
+.acc-item:hover { background: rgba(28,48,80,.5); }
+.acc-item.active { background: var(--navy-mid); }
+
+/* Left accent bar that animates in */
+.acc-item::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 4px;
+  background: var(--gold);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform .4s cubic-bezier(.4,0,.2,1);
+}
+.acc-item.active::before { transform: scaleY(1); }
+
+/* Header row */
+.acc-head {
+  display: flex;
+  align-items: center;
+  padding: 1.75rem 2rem 1.75rem 2.5rem;
+  gap: 2rem;
+  user-select: none;
+}
+
+.acc-icon {
+  font-size: 1.8rem;
+  flex-shrink: 0;
+  width: 52px; height: 52px;
+  background: rgba(201,168,76,.08);
+  border: 1px solid rgba(201,168,76,.15);
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 2px;
+  transition: background .3s, border-color .3s;
+}
+.acc-item.active .acc-icon {
+  background: rgba(201,168,76,.15);
+  border-color: rgba(201,168,76,.4);
+}
+
+.acc-head-text { flex: 1; }
+
+.acc-vertical {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--gold-dim); margin-bottom: .3rem;
+}
+
+.acc-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem; font-weight: 700;
+  color: var(--cream); line-height: 1.2;
+  transition: color .2s;
+}
+.acc-item.active .acc-name { color: var(--gold-light); }
+
+.acc-teaser {
+  font-size: .95rem;
+  color: rgba(245,238,220,.45);
+  font-style: italic;
+  margin-top: .2rem;
+  transition: opacity .3s;
+}
+.acc-item.active .acc-teaser { opacity: 0; height: 0; overflow: hidden; margin: 0; }
+
+.acc-arrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 1.4rem;
+  color: rgba(201,168,76,.4);
+  flex-shrink: 0;
+  transition: transform .4s cubic-bezier(.4,0,.2,1), color .3s;
+}
+.acc-item.active .acc-arrow {
+  transform: rotate(45deg);
+  color: var(--gold);
+}
+
+/* Expandable body */
+.acc-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .55s cubic-bezier(.4,0,.2,1);
+}
+.acc-item.active .acc-body { max-height: 600px; }
+
+.acc-body-inner {
+  padding: 0 2rem 2.25rem 2.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  align-items: start;
+  border-top: 1px solid rgba(201,168,76,.08);
+  padding-top: 1.75rem;
+  margin: 0 0 0 0;
+}
+
+/* Cinematic scene panel */
+.acc-scene {
+  position: relative;
+  background: var(--navy-light);
+  border: 1px solid rgba(201,168,76,.12);
+  padding: 1.75rem;
+  overflow: hidden;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+/* Animated gradient background simulating cinematic feel */
+.acc-scene::before {
+  content: '';
+  position: absolute; inset: 0;
+  opacity: 0;
+  transition: opacity .6s ease .1s;
+}
+.acc-item.active .acc-scene::before { opacity: 1; }
+
+.scene-hvac::before {
+  background: radial-gradient(ellipse at 30% 70%, rgba(184,74,46,.25) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(201,168,76,.15) 0%, transparent 50%),
+    linear-gradient(160deg, #0a1520 0%, #1a2a3a 100%);
+}
+.scene-restaurant::before {
+  background: radial-gradient(ellipse at 50% 80%, rgba(201,168,76,.3) 0%, transparent 55%),
+    radial-gradient(ellipse at 20% 20%, rgba(184,74,46,.2) 0%, transparent 45%),
+    linear-gradient(160deg, #150a05 0%, #1f1208 100%);
+}
+.scene-legal::before {
+  background: radial-gradient(ellipse at 70% 50%, rgba(201,168,76,.18) 0%, transparent 55%),
+    linear-gradient(160deg, #080d15 0%, #0d1520 100%);
+}
+.scene-medical::before {
+  background: radial-gradient(ellipse at 40% 60%, rgba(100,180,200,.15) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 20%, rgba(201,168,76,.12) 0%, transparent 45%),
+    linear-gradient(160deg, #060d12 0%, #0d1a22 100%);
+}
+.scene-realestate::before {
+  background: radial-gradient(ellipse at 60% 40%, rgba(201,168,76,.2) 0%, transparent 50%),
+    linear-gradient(160deg, #0d1205 0%, #131a08 100%);
+}
+.scene-manufacturing::before {
+  background: radial-gradient(ellipse at 20% 70%, rgba(184,74,46,.2) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 30%, rgba(100,120,140,.15) 0%, transparent 45%),
+    linear-gradient(160deg, #0d0d0d 0%, #1a1a22 100%);
+}
+
+.scene-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: .2em; text-transform: uppercase;
+  color: rgba(201,168,76,.5);
+  margin-bottom: .6rem;
+  position: relative; z-index: 1;
+}
+
+.scene-moment {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--gold-light);
+  line-height: 1.55;
+  position: relative; z-index: 1;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .5s ease .2s, transform .5s ease .2s;
+}
+.acc-item.active .scene-moment {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Scene ticker — animated bar */
+.scene-ticker {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 3px; background: rgba(201,168,76,.15);
+  overflow: hidden;
+}
+.scene-ticker::after {
+  content: '';
+  position: absolute; left: -100%; top: 0; bottom: 0;
+  width: 100%;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  animation: none;
+}
+.acc-item.active .scene-ticker::after {
+  animation: ticker 2.5s ease infinite;
+}
+@keyframes ticker {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* Content panel */
+.acc-content { display: flex; flex-direction: column; gap: 1.25rem; }
+
+.acc-pain {
+  font-size: 1.02rem;
+  line-height: 1.8;
+  color: rgba(245,238,220,.7);
+}
+.acc-pain strong { color: var(--cream); font-weight: 600; }
+
+.acc-proof {
+  background: rgba(201,168,76,.06);
+  border-left: 3px solid var(--gold);
+  padding: .9rem 1.25rem;
+  font-size: .95rem;
+  color: rgba(245,238,220,.6);
+  line-height: 1.65;
+  font-style: italic;
+}
+
+.acc-systems {
+  display: flex; flex-wrap: wrap; gap: .5rem;
+}
+.acc-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  background: rgba(201,168,76,.08);
+  border: 1px solid rgba(201,168,76,.2);
+  color: var(--gold-dim);
+  padding: .25rem .75rem; border-radius: 2px;
+}
+
+.acc-cta {
+  display: inline-flex; align-items: center; gap: .65rem;
+  background: var(--rust); color: white;
+  padding: .85rem 1.5rem;
+  font-family: 'DM Mono', monospace; font-size: 13px;
+  letter-spacing: .1em; text-transform: uppercase;
+  text-decoration: none; border: none; cursor: pointer;
+  transition: background .2s, transform .15s;
+  align-self: flex-start; margin-top: .5rem;
+}
+.acc-cta:hover { background: var(--rust-light); transform: translateY(-2px); }
+.acc-cta::after { content: '→'; }
+
+/* Progress dots */
+.acc-progress {
+  display: flex; gap: .5rem;
+  margin-top: 3rem;
+  justify-content: center;
+}
+.acc-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: rgba(201,168,76,.2);
+  cursor: pointer;
+  transition: background .3s, transform .3s;
+}
+.acc-dot.active { background: var(--gold); transform: scale(1.4); }
+
+@media (max-width: 900px) {
+  .accordion-header { grid-template-columns: 1fr; gap: 1.5rem; }
+  .acc-body-inner { grid-template-columns: 1fr; }
+  .accordion-container { padding: 0 1.5rem; }
+  .acc-head { padding: 1.5rem 1.25rem; }
+  .acc-body-inner { padding: 0 1.25rem 2rem; padding-top: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     CINEMATIC VERTICAL ACCORDION
+     Copy this entire <section> into index.html
+     after the #systems section
+══════════════════════════════════════════ -->
+<section class="accordion-section" id="who-its-for" aria-labelledby="accordion-heading">
+  <div class="accordion-container">
+
+    <div class="accordion-header">
+      <div>
+        <p class="accordion-label">Your Industry · Your Systems</p>
+        <h2 class="accordion-title" id="accordion-heading">
+          Built for <em>Your</em> Business.<br>Not a Generic Template.
+        </h2>
+      </div>
+      <p class="accordion-intro">
+        Every system built Saturday is configured for your specific vertical — your customer's language, your FAQs, your hours, your offer. Click your industry below to see exactly what changes for you.
+      </p>
+    </div>
+
+    <div class="accordion" id="verticalAccordion">
+
+      <!-- HVAC -->
+      <div class="acc-item active" data-index="0">
+        <div class="acc-head" onclick="toggleAcc(this)">
+          <div class="acc-icon">🔧</div>
+          <div class="acc-head-text">
+            <p class="acc-vertical">Trades & Home Services</p>
+            <h3 class="acc-name">HVAC, Plumbing & Electrical</h3>
+            <p class="acc-teaser">The call you miss at 9pm is the job your competitor books.</p>
+          </div>
+          <span class="acc-arrow">+</span>
+        </div>
+        <div class="acc-body">
+          <div class="acc-body-inner">
+            <div class="acc-scene scene-hvac">
+              <p class="scene-label">Cinematic Moment</p>
+              <p class="scene-moment">"It's 11pm. A homeowner's furnace dies. They call three HVAC companies. Two go to voicemail. One answers — in seconds, professionally — books the emergency call, and sends a confirmation text. That's your AI concierge. That's Monday morning's first job."</p>
+              <div class="scene-ticker"></div>
+            </div>
+            <div class="acc-content">
+              <p class="acc-pain">
+                <strong>The after-hours call is your biggest missed revenue moment.</strong> Emergency trades calls at 7pm, 10pm, and Saturday morning go to whoever answers first. Your AI Voice Concierge answers every call, every time — captures the emergency details, confirms the service window, and texts the customer a confirmation before you've put your tools down.
+              </p>
+              <p class="acc-proof">"I was losing Saturday morning calls while I was on Friday jobs. The concierge captured three emergency calls my first weekend. That paid for the Sprint before Tuesday." — HVAC Owner, Medina</p>
+              <div class="acc-systems">
+                <span class="acc-tag">Avatar: Homeowner 45–65</span>
+                <span class="acc-tag">Voice Concierge</span>
+                <span class="acc-tag">Emergency FAQ config</span>
+                <span class="acc-tag">After-hours routing</span>
+              </div>
+              <a href="https://drjohnteaches.mysamcart.com/checkout/northeast-ohio-ai-marketing-communications-single-day-accelerator#samcart-slide-open-right" class="acc-cta" target="_blank" rel="noopener">Register for June 21</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESTAURANT -->
+      <div class="acc-item" data-index="1">
+        <div class="acc-head" onclick="toggleAcc(this)">
+          <div class="acc-icon">🍽️</div>
+          <div class="acc-head-text">
+            <p class="acc-vertical">Food & Hospitality</p>
+            <h3 class="acc-name">Restaurants, Cafés & Food Service</h3>
+            <p class="acc-teaser">Thirty days of content done while the lunch rush runs itself.</p>
+          </div>
+          <span class="acc-arrow">+</span>
+        </div>
+        <div class="acc-body">
+          <div class="acc-body-inner">
+            <div class="acc-scene scene-restaurant">
+              <p class="scene-label">Cinematic Moment</p>
+              <p class="scene-moment">"Saturday morning. Chef's in prep. The AI content calendar generates thirty posts in ten minutes — specials, stories, behind-the-scenes, promotions. The voice concierge answers reservation calls. The owner hasn't touched their phone. The dining room fills anyway."</p>
+              <div class="scene-ticker"></div>
+            </div>
+            <div class="acc-content">
+              <p class="acc-pain">
+                <strong>You're running a kitchen, not a marketing department.</strong> The AI Content Calendar generates thirty days of restaurant content — daily specials, seasonal promotions, reservation nudges, community moments — in about ten minutes. You run the prompt monthly. Most attendees reduce or cancel their agency retainer within 30 days.
+              </p>
+              <p class="acc-proof">"I was paying $750/month for social media management. I cancelled it the week after the Sprint. The AI generates better content and actually knows my menu." — Restaurant Owner, Hudson</p>
+              <div class="acc-systems">
+                <span class="acc-tag">Avatar: Local dining regulars</span>
+                <span class="acc-tag">Content Calendar</span>
+                <span class="acc-tag">Reservation concierge</span>
+                <span class="acc-tag">Review response automation</span>
+              </div>
+              <a href="https://drjohnteaches.mysamcart.com/checkout/northeast-ohio-ai-marketing-communications-single-day-accelerator#samcart-slide-open-right" class="acc-cta" target="_blank" rel="noopener">Register for June 21</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LAW / PROFESSIONAL -->
+      <div class="acc-item" data-index="2">
+        <div class="acc-head" onclick="toggleAcc(this)">
+          <div class="acc-icon">⚖️</div>
+          <div class="acc-head-text">
+            <p class="acc-vertical">Professional Services</p>
+            <h3 class="acc-name">Law Firms, Accountants & Consultants</h3>
+            <p class="acc-teaser">New matters qualified before you pick up the phone.</p>
+          </div>
+          <span class="acc-arrow">+</span>
+        </div>
+        <div class="acc-body">
+          <div class="acc-body-inner">
+            <div class="acc-scene scene-legal">
+              <p class="scene-label">Cinematic Moment</p>
+              <p class="scene-moment">"A potential client searches at midnight, finds the firm, asks three intake questions in the chat widget, and books a consultation — all before the attorney's alarm goes off. The morning calendar has three qualified leads. Zero calls were made. Zero staff were involved."</p>
+              <div class="scene-ticker"></div>
+            </div>
+            <div class="acc-content">
+              <p class="acc-pain">
+                <strong>Intake is your highest-value, most manual process.</strong> The AI voice concierge handles initial intake questions, qualifies the matter type, screens for conflicts, and books the consultation. The chatbot does the same on your website. You see qualified leads — not cold inquiries — on your Monday calendar.
+              </p>
+              <p class="acc-proof">"We were losing after-hours web inquiries constantly. They'd fill the contact form and we'd call back the next morning. Half were already gone. The chatbot books them while they're on the site." — Law Firm Principal, Akron</p>
+              <div class="acc-systems">
+                <span class="acc-tag">Avatar: Stressed decision-maker</span>
+                <span class="acc-tag">Intake qualification</span>
+                <span class="acc-tag">Consultation booking</span>
+                <span class="acc-tag">5-touch nurture</span>
+              </div>
+              <a href="https://drjohnteaches.mysamcart.com/checkout/northeast-ohio-ai-marketing-communications-single-day-accelerator#samcart-slide-open-right" class="acc-cta" target="_blank" rel="noopener">Register for June 21</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MEDICAL / SPA -->
+      <div class="acc-item" data-index="3">
+        <div class="acc-head" onclick="toggleAcc(this)">
+          <div class="acc-icon">🏥</div>
+          <div class="acc-head-text">
+            <p class="acc-vertical">Medical, Dental & Wellness</p>
+            <h3 class="acc-name">Medical Practices, Day Spas & Wellness</h3>
+            <p class="acc-teaser">No-shows down. Bookings up. Staff doing actual work.</p>
+          </div>
+          <span class="acc-arrow">+</span>
+        </div>
+        <div class="acc-body">
+          <div class="acc-body-inner">
+            <div class="acc-scene scene-medical">
+              <p class="scene-label">Cinematic Moment</p>
+              <p class="scene-moment">"A spa client books online at 10pm for a Sunday facial. The AI sends a confirmation immediately, a reminder 48 hours before, and a no-show follow-up if they cancel. The front desk arrives Monday to a full book and zero missed confirmations. The AI worked all weekend."</p>
+              <div class="scene-ticker"></div>
+            </div>
+            <div class="acc-content">
+              <p class="acc-pain">
+                <strong>No-shows cost you the appointment and the rebooking window.</strong> The automated lead nurture sequence sends confirmation, reminder, and rebooking messages automatically. Your voice concierge handles after-hours appointment requests and FAQs. Your front desk focuses on patients in the room, not the ones on hold.
+              </p>
+              <p class="acc-proof">"No-shows dropped about 40% after we got the reminder sequence running. The AI sends confirmation, 48hr reminder, and day-of reminder automatically. We just show up and treat." — Day Spa Owner, Chagrin Falls</p>
+              <div class="acc-systems">
+                <span class="acc-tag">Avatar: Wellness-seeking professional</span>
+                <span class="acc-tag">Appointment concierge</span>
+                <span class="acc-tag">No-show sequence</span>
+                <span class="acc-tag">Rebooking automation</span>
+              </div>
+              <a href="https://drjohnteaches.mysamcart.com/checkout/northeast-ohio-ai-marketing-communications-single-day-accelerator#samcart-slide-open-right" class="acc-cta" target="_blank" rel="noopener">Register for June 21</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- REAL ESTATE -->
+      <div class="acc-item" data-index="4">
+        <div class="acc-head" onclick="toggleAcc(this)">
+          <div class="acc-icon">🏠</div>
+          <div class="acc-head-text">
+            <p class="acc-vertical">Real Estate & Property</p>
+            <h3 class="acc-name">Realtors, Brokers & Property Management</h3>
+            <p class="acc-teaser">Listings answered 24/7 while you're showing another property.</p>
+          </div>
+          <span class="acc-arrow">+</span>
+        </div>
+        <div class="acc-body">
+          <div class="acc-body-inner">
+            <div class="acc-scene scene-realestate">
+              <p class="scene-label">Cinematic Moment</p>
+              <p class="scene-moment">"You're showing a $650K home in Hudson. Your phone buzzes — an inquiry on the Chagrin Falls listing. You're unavailable. The AI concierge answers, provides the details, schedules a showing, and sends the prospect a confirmation. You finish the Hudson showing and check your calendar. Two new showings booked."</p>
+              <div class="scene-ticker"></div>
+            </div>
+            <div class="acc-content">
+              <p class="acc-pain">
+                <strong>You can only show one house at a time. Your AI works all of them simultaneously.</strong> The voice concierge handles property questions, schedules showings, and qualifies buyer intent while you're in the field. The lead nurture sequence follows every inquiry automatically — seven days of touches without a single manual send.
+              </p>
+              <p class="acc-proof">"I was losing weekend leads while I was at showings. The AI answered every listing inquiry and booked the showing. I came back from Sunday open houses to a Monday full of scheduled appointments." — Realtor, Solon</p>
+              <div class="acc-systems">
+                <span class="acc-tag">Avatar: Active buyer / motivated seller</span>
+                <span class="acc-tag">Listing inquiry concierge</span>
+                <span class="acc-tag">Showing scheduler</span>
+                <span class="acc-tag">Buyer nurture sequence</span>
+              </div>
+              <a href="https://drjohnteaches.mysamcart.com/checkout/northeast-ohio-ai-marketing-communications-single-day-accelerator#samcart-slide-open-right" class="acc-cta" target="_blank" rel="noopener">Register for June 21</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MANUFACTURING -->
+      <div class="acc-item" data-index="5">
+        <div class="acc-head" onclick="toggleAcc(this)">
+          <div class="acc-icon">🏭</div>
+          <div class="acc-head-text">
+            <p class="acc-vertical">Manufacturing & Fabrication</p>
+            <h3 class="acc-name">Fabricators, Machine Shops & Industrial</h3>
+            <p class="acc-teaser">The Friday 5pm quote request that used to go cold. Not anymore.</p>
+          </div>
+          <span class="acc-arrow">+</span>
+        </div>
+        <div class="acc-body">
+          <div class="acc-body-inner">
+            <div class="acc-scene scene-manufacturing">
+              <p class="scene-label">Cinematic Moment</p>
+              <p class="scene-moment">"Friday 4:58pm. A procurement manager in Canton needs a quote on a custom run. Your shop is closed. The AI concierge answers, captures the specs, confirms receipt, and sends a 'we'll have your quote Monday morning' message. Monday your estimator has a warm lead waiting — not a cold call to return."</p>
+              <div class="scene-ticker"></div>
+            </div>
+            <div class="acc-content">
+              <p class="acc-pain">
+                <strong>The Cleveland-Canton corridor loses millions in fabrication work to faster responders every year.</strong> Not better shops — faster ones. Your AI concierge captures every after-hours procurement inquiry, confirms it professionally, and routes it to your estimator's queue. The buyer feels served. The job stays in your pipeline.
+              </p>
+              <p class="acc-proof">"We're a job shop. Every missed inquiry is a potential production run. The AI captures them, gives the buyer a professional response, and we see the lead Monday. We've stopped losing Friday afternoon calls." — Machine Shop Owner, Canton</p>
+              <div class="acc-systems">
+                <span class="acc-tag">Avatar: Procurement manager</span>
+                <span class="acc-tag">RFQ capture concierge</span>
+                <span class="acc-tag">Quote request routing</span>
+                <span class="acc-tag">B2B nurture sequence</span>
+              </div>
+              <a href="https://drjohnteaches.mysamcart.com/checkout/northeast-ohio-ai-marketing-communications-single-day-accelerator#samcart-slide-open-right" class="acc-cta" target="_blank" rel="noopener">Register for June 21</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /.accordion -->
+
+    <!-- Progress dots -->
+    <div class="acc-progress" id="accProgress">
+      <div class="acc-dot active" onclick="goAccordion(0)"></div>
+      <div class="acc-dot" onclick="goAccordion(1)"></div>
+      <div class="acc-dot" onclick="goAccordion(2)"></div>
+      <div class="acc-dot" onclick="goAccordion(3)"></div>
+      <div class="acc-dot" onclick="goAccordion(4)"></div>
+      <div class="acc-dot" onclick="goAccordion(5)"></div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+/* ── ACCORDION LOGIC ── */
+function toggleAcc(headEl) {
+  const item = headEl.closest('.acc-item');
+  const isActive = item.classList.contains('active');
+
+  // Close all
+  document.querySelectorAll('.acc-item').forEach(i => i.classList.remove('active'));
+  document.querySelectorAll('.acc-dot').forEach(d => d.classList.remove('active'));
+
+  // Open clicked if it wasn't already open
+  if (!isActive) {
+    item.classList.add('active');
+    const idx = parseInt(item.dataset.index);
+    document.querySelectorAll('.acc-dot')[idx]?.classList.add('active');
+  }
+}
+
+function goAccordion(idx) {
+  document.querySelectorAll('.acc-item').forEach(i => i.classList.remove('active'));
+  document.querySelectorAll('.acc-dot').forEach(d => d.classList.remove('active'));
+  const target = document.querySelector(`.acc-item[data-index="${idx}"]`);
+  if (target) {
+    target.classList.add('active');
+    document.querySelectorAll('.acc-dot')[idx]?.classList.add('active');
+    target.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+/* Auto-advance every 8 seconds when user hasn't interacted */
+let autoTimer;
+let userInteracted = false;
+
+function startAuto() {
+  autoTimer = setInterval(() => {
+    if (userInteracted) { clearInterval(autoTimer); return; }
+    const active = document.querySelector('.acc-item.active');
+    const idx = active ? parseInt(active.dataset.index) : -1;
+    const next = (idx + 1) % 6;
+    goAccordion(next);
+  }, 8000);
+}
+
+document.querySelectorAll('.acc-head').forEach(h => {
+  h.addEventListener('click', () => { userInteracted = true; clearInterval(autoTimer); });
+});
+
+startAuto();
+</script>
+
+<!-- ════════════════════════════════════════
+     CINEMATIC AD STORYBOARDS
+     For use with Cance 2.0 + GPT Image 2
+════════════════════════════════════════ -->
+<!--
+STORYBOARD 1: HVAC / TRADES
+"The Call That Changed Everything"
+15 seconds · 16:9 · Dark cinematic
+
+Scene 1 (0:00-0:03): EXTREME CLOSE-UP
+  A phone rings in a dark kitchen. 11:03pm on the clock.
+  A furnace pilot light flickers and dies.
+  Sound: phone ring, silence, then a warm AI voice answers instantly.
+  Text overlay: "11:03 PM"
+
+Scene 2 (0:03-0:07): SPLIT SCREEN
+  LEFT: Homeowner's relieved face, phone to ear.
+  RIGHT: Calendar booking animation, confirmation text sent.
+  Sound: "I can schedule an emergency call for 7am. Sending confirmation now."
+  Text overlay: "Answered. Booked. Done."
+
+Scene 3 (0:07-0:11): WIDE SHOT — DAWN
+  HVAC van pulling into a driveway at 7am. Sun rising.
+  Owner stepping out, confident.
+  Text overlay: "The AI worked while you slept."
+
+Scene 4 (0:11-0:15): LOGO CLOSE
+  NEOSprint.com on dark background.
+  Tagline: "One Saturday. Five AI Systems. Your Business Never Misses Again."
+  Gold accent bar animation.
+
+---
+
+STORYBOARD 2: RESTAURANT
+"The Kitchen That Never Stops"
+15 seconds · 16:9 · Warm cinematic
+
+Scene 1 (0:00-0:04): MACRO CLOSE-UP
+  Steam rising from a bowl of ramen. Chef's hands plating.
+  A phone buzzes — reservation request, 9pm.
+  The chef doesn't look up. The AI answers.
+  Sound: Kitchen ambience, soft confirmation chime.
+
+Scene 2 (0:04-0:08): OVERHEAD SHOT
+  A content calendar filling automatically on a screen.
+  30 posts. One prompt. Ten minutes.
+  Text overlay: "30 days of content. 10 minutes."
+
+Scene 3 (0:08-0:12): DINING ROOM — GOLDEN HOUR
+  Full dining room. Warm light. Happy guests.
+  Owner smiling, finally not on their phone.
+  Text overlay: "The room fills. The AI handles everything else."
+
+Scene 4 (0:12-0:15): LOGO CLOSE
+  NEOSprint.com. "June 21. Twenty seats. One Saturday."
+
+---
+
+STORYBOARD 3: MEDICAL / DAY SPA
+"The Appointment That Books Itself"
+15 seconds · 9:16 (vertical/Reels) · Soft cinematic
+
+Scene 1 (0:00-0:03): CLOSE-UP — EVENING
+  Woman on couch, phone in hand. 10:17pm. Searches "day spa near me."
+  Finds the listing. Taps the chat.
+  Sound: Soft ambient. Chat bubble appears.
+
+Scene 2 (0:03-0:07): SCREEN RECORDING STYLE
+  Chat conversation animates: "What services are available Sunday?"
+  AI responds instantly. Booking confirmed. Confirmation sent.
+  Sound: Soft chime. "You're all set for Sunday at 11am."
+
+Scene 3 (0:07-0:11): SPA — MORNING
+  Spa reception. Peaceful. Staff reviewing a full Sunday booking sheet.
+  No calls to return. No follow-ups to make.
+  Text overlay: "The AI booked her while you slept."
+
+Scene 4 (0:11-0:15): LOGO CLOSE
+  NEOSprint.com. "Build this in one Saturday."
+
+---
+
+STORYBOARD 4: MANUFACTURING / CANTON CORRIDOR
+"The Quote That Didn't Get Away"
+15 seconds · 16:9 · Industrial cinematic
+
+Scene 1 (0:00-0:04): PLANT FLOOR — END OF SHIFT
+  5:02pm. Lights going out over a machine shop floor.
+  A procurement manager's phone rings into an empty office.
+  Voicemail. He hangs up. Opens competitor's site.
+  Sound: Factory wind-down. Silence. Typing.
+
+Scene 2 (0:04-0:08): SAME CALL — YOUR SHOP
+  Rewind. 5:02pm. Same call. YOUR shop.
+  AI answers professionally. Captures RFQ details.
+  Confirmation text sent: "We'll have your quote Monday morning."
+  Sound: Professional AI voice. Confirmation chime.
+
+Scene 3 (0:08-0:12): MONDAY MORNING
+  Estimator arrives. Warm lead in queue. Quote sent.
+  Job awarded.
+  Text overlay: "The Friday call your competitor lost. The Monday job you won."
+
+Scene 4 (0:12-0:15): LOGO CLOSE
+  NEOSprint.com. "Canton. Cleveland. Akron. June 21."
+-->
+</body>
+</html>
