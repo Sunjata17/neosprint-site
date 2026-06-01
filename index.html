@@ -772,11 +772,10 @@
 
   }
 
-  /* Hide VAPI SDK's injected default button — does not match #vapiWidget */
-  #vapi-support-btn,
-  .vapi-support-button,
-  div[id^="vapi-support"],
-  div[class^="vapi-support"] {
+  /* Hide VAPI SDK's injected default button — explicitly excludes #vapiWidget */
+  #vapi-support-btn:not(#vapiWidget),
+  .vapi-support-button:not(#vapiWidget),
+  div[id^="vapi-support"] {
     display: none !important;
   }
 
