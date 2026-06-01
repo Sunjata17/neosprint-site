@@ -1402,10 +1402,20 @@ async function submitLead() {
     timestamp: new Date().toISOString()
   };
 
-  // SMOS webhook — replace with live endpoint
-  const WEBHOOK = 'https://dqhfksbkrivtxkzixfol.supabase.co/functions/v1/leadfuel-ingest';
+  // ActiveCampaign — create/update contact, add to list, apply tag
   try {
-    await fetch(WEBHOOK, {
+    await fetch('/api/submit-lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  } catch (err) {
+    console.warn('AC submission error (non-blocking):', err.message);
+  }
+
+  // SMOS webhook (non-blocking)
+  try {
+    await fetch('https://dqhfksbkrivtxkzixfol.supabase.co/functions/v1/leadfuel-ingest', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
