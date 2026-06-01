@@ -1515,7 +1515,7 @@ async function startVapiCall() {
 
   try {
     if (!window.Vapi) {
-      await loadScript('https://unpkg.com/@vapi-ai/web/dist/vapi.js');
+      await loadScript('https://cdn.jsdelivr.net/npm/@vapi-ai/web/dist/vapi.iife.js');
     }
     vapiInstance = new window.Vapi(VAPI_PUBLIC_KEY);
     vapiInstance.start(ALEXIS_UUID);
